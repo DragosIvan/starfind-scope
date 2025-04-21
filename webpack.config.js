@@ -23,7 +23,7 @@ module.exports = {
         path: path.resolve(__dirname, 'docs'),
         // library means that the exports from the entry file can be accessed from outside, in this case from the global scope as window.TestApp
         library: { type: 'umd', name: 'StarScopeCall' },
-        publicPath: '/starfind-scope/',
+        publicPath: '/',
     },
     devtool: false,
     mode: 'development',

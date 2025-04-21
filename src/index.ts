@@ -70,16 +70,20 @@ async function findDialogAndReadData(img: a1lib.ImgRef) {
 
     const pngImage = await pixels.toFileBytes('image/png');
 
-    const text = await recognizeTextFromImage(
+    let text = await recognizeTextFromImage(
         new Blob([pngImage], { type: 'image/png' })
     );
+
+    // let text = `You see a shooting star!
+    //             The star looks like itwill land in The Lost Grove in the next 10 12 minutes.
+    //             The star looks to be size 4,`;
 
     console.log(text);
 
     const world = alt1.currentWorld;
     const location = getLocation(text);
-    const time = getTime(text);
     const size = getSize(text);
+    const time = getTime(text);
 
     console.log(
         'Command: ',
@@ -92,16 +96,16 @@ async function findDialogAndReadData(img: a1lib.ImgRef) {
         <div class="text-center bold">/call world: ${world} region: ${location} size: ${size} relative-time: ${time}</div>`
     );
 
-    navigator.clipboard
-        .writeText(
-            `/call world: ${world} region: ${location} size: ${size} relative-time: ${time}`
-        )
-        .then(() => {
-            console.log('Command copied to clipboard!');
-        })
-        .catch((err) => {
-            console.error('Failed to copy command to clipboard:', err);
-        });
+    // navigator.clipboard
+    //     .writeText(
+    //         `/call world: ${world} region: ${location} size: ${size} relative-time: ${time}`
+    //     )
+    //     .then(() => {
+    //         console.log('Command copied to clipboard!');
+    //     })
+    //     .catch((err) => {
+    //         console.error('Failed to copy command to clipboard:', err);
+    //     });
 }
 
 output.insertAdjacentHTML(

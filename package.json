@@ -2,7 +2,7 @@
     "scripts": {
         "build": "webpack --mode production",
         "watch": "webpack --watch",
-        "serve": "webpack serve"
+        "serve": "webpack serve --mode development"
     },
     "dependencies": {
         "alt1": "^0.0.1",

@@ -1,5 +1,5 @@
 {
-    "appName": "Starfind Scoper",
+    "appName": "Starfind Scoper DEV",
     "description": "Generate the /call command and automatically send shooting star info to the StarFind API when Scoping",
     "appUrl": "./index.html",
     "configUrl": "./appconfig.json",

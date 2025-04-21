@@ -17,7 +17,44 @@ export async function recognizeTextFromImage(image: Blob) {
         // Terminate the worker
         await worker.terminate();
 
-        return text;
+        let finalText = text;
+
+        finalText = finalText.replace('itwill', 'it will');
+        finalText = finalText.replace('mines', 'minutes');
+
+        // Normalize the input string
+        finalText = finalText.replace('t0', 'to');
+
+        // Ensure proper spacing around 'to' and 'minutes'
+        finalText = finalText
+            .replace(/(\d)\s*to\s*(\d)/g, '$1 to $2')
+            .replace(/(\d)\s*minutes/g, '$1 minutes');
+
+        // Add 'to' between numbers if missing
+        finalText = finalText.replace(/(\d+)\s+(\d+)/g, '$1 to $2');
+
+        // Deal with cases when the first number is greater than the second
+        const timeRangeMatch = finalText.match(/(\d+)\s+to\s+(\d+)/);
+        if (timeRangeMatch) {
+            const [_, start, end] = timeRangeMatch;
+            const startNum = parseInt(start);
+            const endNum = parseInt(end);
+
+            // If first number is greater than second, remove its last digit
+            if (startNum > endNum) {
+                finalText = finalText.replace(
+                    timeRangeMatch[0],
+                    `${Math.floor(startNum / 10)} to ${endNum}`
+                );
+            } else {
+                finalText = finalText.replace(
+                    timeRangeMatch[0],
+                    `${startNum} to ${endNum}`
+                );
+            }
+        }
+
+        return finalText;
     } catch (error) {
         console.error('Error during OCR:', error);
         throw error;
@@ -70,30 +107,9 @@ export const getLocation = (input: string): string => {
 };
 
 export const getTime = (input: string): string => {
-    // Normalize the input string
-    input = input.replace('t0', 'to');
-
-    // Ensure proper spacing around 'to' and 'minutes'
-    input = input
-        .replace(/(\d)to(\d)/g, '$1 to $2')
-        .replace(/(\d)minutes/g, '$1 minutes');
-
-    // Extract time range if present
-    const timeRangeMatch = input.match(/(\d+)\s+to\s+(\d+)/);
-    if (timeRangeMatch) {
-        const [_, start, end] = timeRangeMatch;
-        const startNum = parseInt(start);
-        const endNum = parseInt(end);
-
-        // Handle case where first number might be misread (e.g., 120 to 30)
-        if (startNum > endNum && startNum > 100) {
-            return `${Math.floor(startNum / 10)} to ${endNum}`;
-        }
-        return `${startNum} to ${endNum}`;
-    }
-
     // Extract time after "next"
     const nextMatch = input.match(/next\s+(.*?)\s+to/);
+
     if (!nextMatch) {
         return '0';
     }
