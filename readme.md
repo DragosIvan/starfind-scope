@@ -1,13 +1,26 @@
 # Starfind Scope /call command generator
 
+alt1:
+
+- Make sure alt1 is running
+- Navigate, in your browser or the alt1 browser, to this address: https://dragosivan.github.io/starfind-scope/
+- Click on "here" to install the app in alt1.
+- Give necessary permissions
+- Open the app
+- Use your telescope
+- Click the button
+- Enjoy! The app automatically copies the /call command, so all you need to do is go to discord and paste it!
+
+Dev mode:
+
 how to use
 
 ```sh
 # to initialize the repo and install dependencies
-npm i
-# build
+npm ci
+# build - This builds the files in a "docs" folder, because I'm using Github Pages to deploy the app
 npm run build
-# dev-server
+# dev-server - Use this in order to test locally
 npm run serve
 ```
 
