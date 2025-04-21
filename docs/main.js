@@ -6695,7 +6695,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 var output = document.getElementById('output');
 var logs = document.getElementById('logs');
-output.insertAdjacentHTML('beforeend', "<div class=\"version\">v. 1.0.2</div>");
+output.insertAdjacentHTML('beforeend', "<div class=\"version\">v. 1.0.3</div>");
 if (window.alt1) {
     alt1.identifyAppUrl('./appconfig.json');
 }
@@ -6715,9 +6715,51 @@ function capture() {
     var img = alt1__WEBPACK_IMPORTED_MODULE_5__.captureHoldFullRs();
     findDialogAndReadData(img);
 }
+function copyToClipboard(text) {
+    return __awaiter(this, void 0, void 0, function () {
+        var textArea, successful, err_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 4, , 5]);
+                    if (!(navigator.clipboard && window.isSecureContext)) return [3 /*break*/, 2];
+                    return [4 /*yield*/, navigator.clipboard.writeText(text)];
+                case 1:
+                    _a.sent();
+                    return [2 /*return*/, true];
+                case 2:
+                    textArea = document.createElement('textarea');
+                    textArea.value = text;
+                    textArea.style.position = 'fixed';
+                    textArea.style.left = '0';
+                    textArea.style.top = '0';
+                    textArea.style.opacity = '0';
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    try {
+                        successful = document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                        return [2 /*return*/, successful];
+                    }
+                    catch (err) {
+                        document.body.removeChild(textArea);
+                        return [2 /*return*/, false];
+                    }
+                    _a.label = 3;
+                case 3: return [3 /*break*/, 5];
+                case 4:
+                    err_1 = _a.sent();
+                    console.error('Failed to copy to clipboard:', err_1);
+                    return [2 /*return*/, false];
+                case 5: return [2 /*return*/];
+            }
+        });
+    });
+}
 function findDialogAndReadData(img) {
     return __awaiter(this, void 0, void 0, function () {
-        var pixels, diagReader, dialog, pngImage, text, world, location, size, time;
+        var pixels, diagReader, dialog, pngImage, text, world, location, size, time, command, copySuccess;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
@@ -6747,16 +6789,17 @@ function findDialogAndReadData(img) {
                     size = (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getSize)(text);
                     time = (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getTime)(text);
                     console.log('Command: ', "/call world: ".concat(world, " region: ").concat(location, " size: ").concat(size, " relative-time: ").concat(time));
+                    command = "/call world: ".concat(world, " region: ").concat(location, " size: ").concat(size, " relative-time: ").concat(time);
                     logs.innerHTML = '';
-                    logs.insertAdjacentHTML('beforeend', "<div class=\"text-center margin-bottom-5\">Command copied to clipboard!</div>\n        <div class=\"text-center bold\">/call world: ".concat(world, " region: ").concat(location, " size: ").concat(size, " relative-time: ").concat(time, "</div>"));
-                    navigator.clipboard
-                        .writeText("/call world: ".concat(world, " region: ").concat(location, " size: ").concat(size, " relative-time: ").concat(time))
-                        .then(function () {
-                        console.log('Command copied to clipboard!');
-                    })
-                        .catch(function (err) {
-                        console.error('Failed to copy command to clipboard:', err);
-                    });
+                    return [4 /*yield*/, copyToClipboard(command)];
+                case 3:
+                    copySuccess = _a.sent();
+                    if (copySuccess) {
+                        logs.insertAdjacentHTML('beforeend', "<div class=\"text-center margin-bottom-5\">Command copied to clipboard!</div>\n            <div class=\"text-center bold\">".concat(command, "</div>"));
+                    }
+                    else {
+                        logs.insertAdjacentHTML('beforeend', "<div class=\"text-center margin-bottom-5 error\">Failed to copy to clipboard. Please try again or copy manually:</div>\n            <div class=\"text-center bold\">".concat(command, "</div>"));
+                    }
                     return [2 /*return*/];
             }
         });

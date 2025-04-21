@@ -10,7 +10,7 @@ import { getLocation, getSize, getTime, recognizeTextFromImage } from './utils';
 var output = document.getElementById('output');
 var logs = document.getElementById('logs');
 
-output.insertAdjacentHTML('beforeend', `<div class="version">v. 1.0.2</div>`);
+output.insertAdjacentHTML('beforeend', `<div class="version">v. 1.0.3</div>`);
 
 if (window.alt1) {
     alt1.identifyAppUrl('./appconfig.json');
@@ -42,6 +42,37 @@ export function capture() {
     var img = a1lib.captureHoldFullRs();
 
     findDialogAndReadData(img);
+}
+
+async function copyToClipboard(text: string): Promise<boolean> {
+    try {
+        if (navigator.clipboard && window.isSecureContext) {
+            await navigator.clipboard.writeText(text);
+            return true;
+        } else {
+            const textArea = document.createElement('textarea');
+            textArea.value = text;
+            textArea.style.position = 'fixed';
+            textArea.style.left = '0';
+            textArea.style.top = '0';
+            textArea.style.opacity = '0';
+            document.body.appendChild(textArea);
+            textArea.focus();
+            textArea.select();
+
+            try {
+                const successful = document.execCommand('copy');
+                document.body.removeChild(textArea);
+                return successful;
+            } catch (err) {
+                document.body.removeChild(textArea);
+                return false;
+            }
+        }
+    } catch (err) {
+        console.error('Failed to copy to clipboard:', err);
+        return false;
+    }
 }
 
 async function findDialogAndReadData(img: a1lib.ImgRef) {
@@ -94,24 +125,25 @@ async function findDialogAndReadData(img: a1lib.ImgRef) {
         `/call world: ${world} region: ${location} size: ${size} relative-time: ${time}`
     );
 
+    const command = `/call world: ${world} region: ${location} size: ${size} relative-time: ${time}`;
+
     logs.innerHTML = '';
 
-    logs.insertAdjacentHTML(
-        'beforeend',
-        `<div class="text-center margin-bottom-5">Command copied to clipboard!</div>
-        <div class="text-center bold">/call world: ${world} region: ${location} size: ${size} relative-time: ${time}</div>`
-    );
+    const copySuccess = await copyToClipboard(command);
 
-    navigator.clipboard
-        .writeText(
-            `/call world: ${world} region: ${location} size: ${size} relative-time: ${time}`
-        )
-        .then(() => {
-            console.log('Command copied to clipboard!');
-        })
-        .catch((err) => {
-            console.error('Failed to copy command to clipboard:', err);
-        });
+    if (copySuccess) {
+        logs.insertAdjacentHTML(
+            'beforeend',
+            `<div class="text-center margin-bottom-5">Command copied to clipboard!</div>
+            <div class="text-center bold">${command}</div>`
+        );
+    } else {
+        logs.insertAdjacentHTML(
+            'beforeend',
+            `<div class="text-center margin-bottom-5 error">Failed to copy to clipboard. Please try again or copy manually:</div>
+            <div class="text-center bold">${command}</div>`
+        );
+    }
 }
 
 output.insertAdjacentHTML(
