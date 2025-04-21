@@ -3438,10 +3438,6 @@ ___CSS_LOADER_EXPORT___.push([module.id, `/*This stylesheet provides a set of cl
 
 html,
 body {
-    height: 100%;
-}
-
-#output {
     position: relative;
     height: 100%;
 }
