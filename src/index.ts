@@ -10,7 +10,7 @@ import { getLocation, getSize, getTime, recognizeTextFromImage } from './utils';
 var output = document.getElementById('output');
 var logs = document.getElementById('logs');
 
-output.insertAdjacentHTML('beforeend', `<div class="version">v. 1.0.1</div>`);
+output.insertAdjacentHTML('beforeend', `<div class="version">v. 1.0.2</div>`);
 
 if (window.alt1) {
     alt1.identifyAppUrl('./appconfig.json');
@@ -60,6 +60,8 @@ async function findDialogAndReadData(img: a1lib.ImgRef) {
             dialog.height - 40
         );
     } catch (err) {
+        logs.innerHTML = '';
+
         logs.insertAdjacentHTML(
             'beforeend',
             `<div class="text-center">Please use a telescope in order to have data to read from!</div>`
