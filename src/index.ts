@@ -10,7 +10,7 @@ import { getLocation, getSize, getTime, recognizeTextFromImage } from './utils';
 var output = document.getElementById('output');
 var logs = document.getElementById('logs');
 
-output.insertAdjacentHTML('beforeend', `<div class="version">v. 1.0.0</div>`);
+output.insertAdjacentHTML('beforeend', `<div class="version">v. 1.0.1</div>`);
 
 if (window.alt1) {
     alt1.identifyAppUrl('./appconfig.json');
@@ -45,7 +45,7 @@ export function capture() {
 }
 
 async function findDialogAndReadData(img: a1lib.ImgRef) {
-    logs.innerHTML = '';
+    logs.innerHTML = '<div class="spinner"></div>';
 
     let pixels: ImageData;
 
@@ -91,6 +91,8 @@ async function findDialogAndReadData(img: a1lib.ImgRef) {
         'Command: ',
         `/call world: ${world} region: ${location} size: ${size} relative-time: ${time}`
     );
+
+    logs.innerHTML = '';
 
     logs.insertAdjacentHTML(
         'beforeend',

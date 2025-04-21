@@ -3450,6 +3450,25 @@ body {
     color: #ddd;
 }
 
+.spinner {
+    width: 30px;
+    height: 30px;
+    border: 4px solid var(--nis-col-back);
+    border-top: 4px solid var(--nis-col-std);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 10px auto;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
 .nismainborder {
     position: absolute;
     top: 0px;
@@ -6676,7 +6695,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 var output = document.getElementById('output');
 var logs = document.getElementById('logs');
-output.insertAdjacentHTML('beforeend', "<div class=\"version\">v. 1.0.0</div>");
+output.insertAdjacentHTML('beforeend', "<div class=\"version\">v. 1.0.1</div>");
 if (window.alt1) {
     alt1.identifyAppUrl('./appconfig.json');
 }
@@ -6702,7 +6721,7 @@ function findDialogAndReadData(img) {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    logs.innerHTML = '';
+                    logs.innerHTML = '<div class="spinner"></div>';
                     try {
                         diagReader = new (alt1_dialog__WEBPACK_IMPORTED_MODULE_6___default())();
                         dialog = diagReader.find();
@@ -6727,6 +6746,7 @@ function findDialogAndReadData(img) {
                     size = (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getSize)(text);
                     time = (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getTime)(text);
                     console.log('Command: ', "/call world: ".concat(world, " region: ").concat(location, " size: ").concat(size, " relative-time: ").concat(time));
+                    logs.innerHTML = '';
                     logs.insertAdjacentHTML('beforeend', "<div class=\"text-center margin-bottom-5\">Command copied to clipboard!</div>\n        <div class=\"text-center bold\">/call world: ".concat(world, " region: ").concat(location, " size: ").concat(size, " relative-time: ").concat(time, "</div>"));
                     navigator.clipboard
                         .writeText("/call world: ".concat(world, " region: ").concat(location, " size: ").concat(size, " relative-time: ").concat(time))
