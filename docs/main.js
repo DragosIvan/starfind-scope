@@ -6684,6 +6684,8 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 
+var output = document.getElementById('output');
+var logs = document.getElementById('logs');
 if (window.alt1) {
     alt1.identifyAppUrl('./appconfig.json');
 }
@@ -6691,8 +6693,6 @@ else {
     var addappurl = "alt1://addapp/".concat(new URL('./appconfig.json', document.location.href).href);
     output.insertAdjacentHTML('beforeend', "<div class=\"text-center\">Alt1 not detected, click <a href='".concat(addappurl, "'>here</a> to add this app to Alt1</div>"));
 }
-var output = document.getElementById('output');
-var logs = document.getElementById('logs');
 function capture() {
     if (!window.alt1) {
         output.insertAdjacentHTML('beforeend', "<div class=\"text-center\">You need to run this page in alt1 to capture the screen</div>");

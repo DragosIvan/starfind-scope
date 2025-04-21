@@ -7,6 +7,9 @@ import DialogReader from 'alt1/dialog';
 
 import { getLocation, getSize, getTime, recognizeTextFromImage } from './utils';
 
+var output = document.getElementById('output');
+var logs = document.getElementById('logs');
+
 if (window.alt1) {
     alt1.identifyAppUrl('./appconfig.json');
 } else {
@@ -17,9 +20,6 @@ if (window.alt1) {
         `<div class="text-center">Alt1 not detected, click <a href='${addappurl}'>here</a> to add this app to Alt1</div>`
     );
 }
-
-var output = document.getElementById('output');
-var logs = document.getElementById('logs');
 
 export function capture() {
     if (!window.alt1) {
