@@ -6288,9 +6288,9 @@ function recognizeTextFromImage(image) {
                 case 0:
                     _a.trys.push([0, 4, , 5]);
                     return [4 /*yield*/, (0,tesseract_js__WEBPACK_IMPORTED_MODULE_0__.createWorker)('eng', 1, {
-                            workerPath: '/workers/worker.min.js', // Path to the worker script in your output
-                            corePath: '/core/tesseract-core.wasm.js', // Path to the core script
-                            langPath: '/tesseract_data/', // Language data (or host locally)
+                            workerPath: './workers/worker.min.js', // Relative path to the worker script
+                            corePath: './core/tesseract-core.wasm.js', // Relative path to the core script
+                            langPath: './tesseract_data/', // Relative path to language data
                         })];
                 case 1:
                     worker = _a.sent();
