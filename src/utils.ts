@@ -113,8 +113,6 @@ export const getTime = (input: string): string => {
     // Extract time after "next" with more flexible pattern
     const nextMatch = input.match(/(?:in the )?next\s+(.*?)\s+to/);
 
-    console.log('nextMatch', nextMatch);
-
     if (!nextMatch) {
         return '0';
     }
@@ -168,11 +166,17 @@ export const getSize = (input: string): string => {
     if (searchText.indexOf('size') === 1) {
         let sizeNumber = searchText.substring(5).replace(/\D/g, '');
 
-        if (sizeNumber === 'B') {
-            sizeNumber = '8';
+        // Handle case where OCR misreads '8' as 'B'
+        if (sizeNumber === '') {
+            const sizeText = searchText.substring(5).trim();
+            if (sizeText.includes('B')) {
+                sizeNumber = '8';
+            }
         }
 
-        return sizeNumber.trim();
+        sizeNumber = sizeNumber.trim();
+
+        return sizeNumber;
     }
 
     // Check for other size descriptions

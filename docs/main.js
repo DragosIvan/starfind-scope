@@ -6417,7 +6417,6 @@ var getLocation = function (input) {
 var getTime = function (input) {
     // Extract time after "next" with more flexible pattern
     var nextMatch = input.match(/(?:in the )?next\s+(.*?)\s+to/);
-    console.log('nextMatch', nextMatch);
     if (!nextMatch) {
         return '0';
     }
@@ -6461,10 +6460,15 @@ var getSize = function (input) {
     // Check for Tier 3 telescope first (exact size number)
     if (searchText.indexOf('size') === 1) {
         var sizeNumber = searchText.substring(5).replace(/\D/g, '');
-        if (sizeNumber === 'B') {
-            sizeNumber = '8';
+        // Handle case where OCR misreads '8' as 'B'
+        if (sizeNumber === '') {
+            var sizeText = searchText.substring(5).trim();
+            if (sizeText.includes('B')) {
+                sizeNumber = '8';
+            }
         }
-        return sizeNumber.trim();
+        sizeNumber = sizeNumber.trim();
+        return sizeNumber;
     }
     // Check for other size descriptions
     for (var _i = 0, _a = Object.entries(sizeMap); _i < _a.length; _i++) {
@@ -6701,7 +6705,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 var output = document.getElementById('output');
 var logs = document.getElementById('logs');
-output.insertAdjacentHTML('beforeend', "<div class=\"version\">v. 1.0.5</div>");
+output.insertAdjacentHTML('beforeend', "<div class=\"version\">v. 1.0.6</div>");
 if (window.alt1) {
     alt1.identifyAppUrl('./appconfig.json');
 }
