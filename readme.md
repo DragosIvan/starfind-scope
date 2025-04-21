@@ -7,6 +7,7 @@ alt1:
 - Click on "here" to install the app in alt1.
 - Give necessary permissions
 - Open the app
+- Right-click on "Alt1 Toolkit" in-game, in the top-right corner, and make sure "Show current world" is checked
 - Use your telescope
 - Click the button
 - Enjoy! The app automatically copies the /call command, so all you need to do is go to discord and paste it!
