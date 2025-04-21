@@ -10,6 +10,8 @@ import { getLocation, getSize, getTime, recognizeTextFromImage } from './utils';
 var output = document.getElementById('output');
 var logs = document.getElementById('logs');
 
+output.insertAdjacentHTML('beforeend', `<div class="version">v. 1.0.0</div>`);
+
 if (window.alt1) {
     alt1.identifyAppUrl('./appconfig.json');
 } else {
@@ -96,16 +98,16 @@ async function findDialogAndReadData(img: a1lib.ImgRef) {
         <div class="text-center bold">/call world: ${world} region: ${location} size: ${size} relative-time: ${time}</div>`
     );
 
-    // navigator.clipboard
-    //     .writeText(
-    //         `/call world: ${world} region: ${location} size: ${size} relative-time: ${time}`
-    //     )
-    //     .then(() => {
-    //         console.log('Command copied to clipboard!');
-    //     })
-    //     .catch((err) => {
-    //         console.error('Failed to copy command to clipboard:', err);
-    //     });
+    navigator.clipboard
+        .writeText(
+            `/call world: ${world} region: ${location} size: ${size} relative-time: ${time}`
+        )
+        .then(() => {
+            console.log('Command copied to clipboard!');
+        })
+        .catch((err) => {
+            console.error('Failed to copy command to clipboard:', err);
+        });
 }
 
 output.insertAdjacentHTML(

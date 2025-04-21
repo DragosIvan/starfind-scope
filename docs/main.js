@@ -3436,6 +3436,24 @@ ___CSS_LOADER_EXPORT___.push([module.id, `/*This stylesheet provides a set of cl
     font-weight: bold;
 }
 
+html,
+body {
+    height: 100%;
+}
+
+#output {
+    position: relative;
+    height: 100%;
+}
+
+.version {
+    position: absolute;
+    bottom: 4px;
+    right: 2px;
+    font-size: 12px;
+    color: #ddd;
+}
+
 .nismainborder {
     position: absolute;
     top: 0px;
@@ -6662,6 +6680,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 var output = document.getElementById('output');
 var logs = document.getElementById('logs');
+output.insertAdjacentHTML('beforeend', "<div class=\"version\">v. 1.0.0</div>");
 if (window.alt1) {
     alt1.identifyAppUrl('./appconfig.json');
 }
@@ -6713,6 +6732,14 @@ function findDialogAndReadData(img) {
                     time = (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getTime)(text);
                     console.log('Command: ', "/call world: ".concat(world, " region: ").concat(location, " size: ").concat(size, " relative-time: ").concat(time));
                     logs.insertAdjacentHTML('beforeend', "<div class=\"text-center margin-bottom-5\">Command copied to clipboard!</div>\n        <div class=\"text-center bold\">/call world: ".concat(world, " region: ").concat(location, " size: ").concat(size, " relative-time: ").concat(time, "</div>"));
+                    navigator.clipboard
+                        .writeText("/call world: ".concat(world, " region: ").concat(location, " size: ").concat(size, " relative-time: ").concat(time))
+                        .then(function () {
+                        console.log('Command copied to clipboard!');
+                    })
+                        .catch(function (err) {
+                        console.error('Failed to copy command to clipboard:', err);
+                    });
                     return [2 /*return*/];
             }
         });
