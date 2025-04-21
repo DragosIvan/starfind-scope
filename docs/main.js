@@ -3477,6 +3477,22 @@ body {
     bottom: 0px;
 }
 
+.app-link {
+    text-decoration: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.success {
+    color: #00ff00;
+}
+
+.error {
+    color: #ff0000;
+}
+
 .nisborder {
     border-width: 4px;
     border-style: solid;
@@ -6365,11 +6381,11 @@ function copyToClipboard(text) {
 }
 function recognizeTextFromImage(image) {
     return __awaiter(this, void 0, void 0, function () {
-        var worker, text, finalText, timeRangeMatch, _, start, end, startNum, endNum, error_1;
+        var worker, canvas_1, ctx, img_1, imageUrl_1, resizedBlob, text, finalText, timeRangeMatch, _, start, end, startNum, endNum, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 4, , 5]);
+                    _a.trys.push([0, 6, , 7]);
                     return [4 /*yield*/, (0,tesseract_js__WEBPACK_IMPORTED_MODULE_0__.createWorker)('eng', 1, {
                             workerPath: './workers/worker.min.js', // Relative path to the worker script
                             corePath: './core/tesseract-core.wasm.js', // Relative path to the core script
@@ -6377,12 +6393,37 @@ function recognizeTextFromImage(image) {
                         })];
                 case 1:
                     worker = _a.sent();
-                    return [4 /*yield*/, worker.recognize(image)];
+                    canvas_1 = document.createElement('canvas');
+                    ctx = canvas_1.getContext('2d');
+                    img_1 = new Image();
+                    imageUrl_1 = URL.createObjectURL(image);
+                    return [4 /*yield*/, new Promise(function (resolve, reject) {
+                            img_1.onload = resolve;
+                            img_1.onerror = reject;
+                            img_1.src = imageUrl_1;
+                        })];
                 case 2:
+                    _a.sent();
+                    // Set canvas size to 125% of original
+                    canvas_1.width = img_1.width * 1.25;
+                    canvas_1.height = img_1.height * 1.25;
+                    // Draw resized image
+                    ctx.drawImage(img_1, 0, 0, canvas_1.width, canvas_1.height);
+                    return [4 /*yield*/, new Promise(function (resolve) {
+                            canvas_1.toBlob(function (blob) { return resolve(blob); }, 'image/png');
+                        })];
+                case 3:
+                    resizedBlob = _a.sent();
+                    // Clean up
+                    URL.revokeObjectURL(imageUrl_1);
+                    // Use resized image for OCR
+                    image = resizedBlob;
+                    return [4 /*yield*/, worker.recognize(image)];
+                case 4:
                     text = (_a.sent()).data.text;
                     // Terminate the worker
                     return [4 /*yield*/, worker.terminate()];
-                case 3:
+                case 5:
                     // Terminate the worker
                     _a.sent();
                     finalText = text;
@@ -6412,11 +6453,11 @@ function recognizeTextFromImage(image) {
                         }
                     }
                     return [2 /*return*/, finalText];
-                case 4:
+                case 6:
                     error_1 = _a.sent();
                     console.error('Error during OCR:', error_1);
                     throw error_1;
-                case 5: return [2 /*return*/];
+                case 7: return [2 /*return*/];
             }
         });
     });
@@ -6756,21 +6797,24 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 var output = document.getElementById('output');
 var logs = document.getElementById('logs');
-output.insertAdjacentHTML('beforeend', "<div class=\"version\">v. 1.0.9</div>");
+output.insertAdjacentHTML('beforeend', "<div class=\"version\">v. 1.1.0</div>");
 if (window.alt1) {
     alt1.identifyAppUrl('./appconfig.json');
+    output.insertAdjacentHTML('beforeend', "<div class=\"nisbutton\" onclick=\"StarScopeCall.capture();\">Get \"/call\" command</div>");
 }
 else {
     var addappurl = "alt1://addapp/".concat(new URL('./appconfig.json', document.location.href).href);
-    output.insertAdjacentHTML('beforeend', "<div class=\"text-center\">Alt1 not detected, click <a href='".concat(addappurl, "'>here</a> to add this app to Alt1</div>"));
+    output.insertAdjacentHTML('beforeend', "<a href='".concat(addappurl, "' class=\"app-link\">\n            <div class=\"nisbutton\">Alt1 not detected, click here to add this app to Alt1</div>\n        </a>"));
 }
 function capture() {
     if (!window.alt1) {
         output.insertAdjacentHTML('beforeend', "<div class=\"text-center\">You need to run this page in alt1 to capture the screen</div>");
         return;
     }
-    if (!alt1.permissionPixel) {
-        output.insertAdjacentHTML('beforeend', "<div class=\"text-center\">Page is not installed as app or capture permission is not enabled</div>");
+    if (!alt1.permissionPixel ||
+        !alt1.permissionGameState ||
+        !alt1.permissionOverlay) {
+        output.insertAdjacentHTML('beforeend', "<div class=\"text-center\">Page is not installed as app or not all permissions are enabled</div>");
         return;
     }
     var img = alt1__WEBPACK_IMPORTED_MODULE_5__.captureHoldFullRs();
@@ -6815,17 +6859,16 @@ function findDialogAndReadData(img) {
                 case 3:
                     copySuccess = _a.sent();
                     if (copySuccess) {
-                        logs.insertAdjacentHTML('beforeend', "<div class=\"text-center margin-bottom-5\">Command copied to clipboard!</div>\n            <div class=\"text-center bold\">".concat(command, "</div>"));
+                        logs.insertAdjacentHTML('beforeend', "<div class=\"text-center margin-bottom-5 success\">Command copied to clipboard!</div>\n            <div class=\"text-center bold\">".concat(command, "</div>"));
                     }
                     else {
-                        logs.insertAdjacentHTML('beforeend', "<div class=\"text-center margin-bottom-5 error\">Failed to copy to clipboard. Please try again or copy manually:</div>\n            <div class=\"text-center bold\">".concat(command, "</div>"));
+                        logs.insertAdjacentHTML('beforeend', "<div class=\"text-center margin-bottom-5 error\">Failed to copy to clipboard. Please notify dev and copy manually:</div>\n            <div class=\"text-center bold\">".concat(command, "</div>"));
                     }
                     return [2 /*return*/];
             }
         });
     });
 }
-output.insertAdjacentHTML('beforeend', "<div class=\"nisbutton\" onclick=\"StarScopeCall.capture();\">Get \"/call\" command</div>");
 
 })();
 

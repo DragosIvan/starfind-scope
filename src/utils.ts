@@ -50,6 +50,37 @@ export async function recognizeTextFromImage(image: Blob) {
             langPath: './tesseract_data/', // Relative path to language data
         });
 
+        // Create a canvas to resize the image
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
+        const img = new Image();
+
+        // Convert Blob to data URL and wait for image to load
+        const imageUrl = URL.createObjectURL(image);
+        await new Promise((resolve, reject) => {
+            img.onload = resolve;
+            img.onerror = reject;
+            img.src = imageUrl;
+        });
+
+        // Set canvas size to 125% of original
+        canvas.width = img.width * 1.25;
+        canvas.height = img.height * 1.25;
+
+        // Draw resized image
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+        // Convert back to Blob
+        const resizedBlob = await new Promise<Blob>((resolve) => {
+            canvas.toBlob((blob) => resolve(blob), 'image/png');
+        });
+
+        // Clean up
+        URL.revokeObjectURL(imageUrl);
+
+        // Use resized image for OCR
+        image = resizedBlob;
+
         // Recognize text from the base64 image
         const {
             data: { text },

@@ -72,6 +72,22 @@ body {
     bottom: 0px;
 }
 
+.app-link {
+    text-decoration: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.success {
+    color: #00ff00;
+}
+
+.error {
+    color: #ff0000;
+}
+
 .nisborder {
     border-width: 4px;
     border-style: solid;

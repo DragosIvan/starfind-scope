@@ -16,16 +16,23 @@ import {
 var output = document.getElementById('output');
 var logs = document.getElementById('logs');
 
-output.insertAdjacentHTML('beforeend', `<div class="version">v. 1.0.9</div>`);
+output.insertAdjacentHTML('beforeend', `<div class="version">v. 1.1.0</div>`);
 
 if (window.alt1) {
     alt1.identifyAppUrl('./appconfig.json');
+
+    output.insertAdjacentHTML(
+        'beforeend',
+        `<div class="nisbutton" onclick="StarScopeCall.capture();">Get "/call" command</div>`
+    );
 } else {
     let addappurl = `alt1://addapp/${new URL('./appconfig.json', document.location.href).href}`;
 
     output.insertAdjacentHTML(
         'beforeend',
-        `<div class="text-center">Alt1 not detected, click <a href='${addappurl}'>here</a> to add this app to Alt1</div>`
+        `<a href='${addappurl}' class="app-link">
+            <div class="nisbutton">Alt1 not detected, click here to add this app to Alt1</div>
+        </a>`
     );
 }
 
@@ -35,13 +42,20 @@ export function capture() {
             'beforeend',
             `<div class="text-center">You need to run this page in alt1 to capture the screen</div>`
         );
+
         return;
     }
-    if (!alt1.permissionPixel) {
+
+    if (
+        !alt1.permissionPixel ||
+        !alt1.permissionGameState ||
+        !alt1.permissionOverlay
+    ) {
         output.insertAdjacentHTML(
             'beforeend',
-            `<div class="text-center">Page is not installed as app or capture permission is not enabled</div>`
+            `<div class="text-center">Page is not installed as app or not all permissions are enabled</div>`
         );
+
         return;
     }
 
@@ -108,19 +122,14 @@ async function findDialogAndReadData(img: a1lib.ImgRef) {
     if (copySuccess) {
         logs.insertAdjacentHTML(
             'beforeend',
-            `<div class="text-center margin-bottom-5">Command copied to clipboard!</div>
+            `<div class="text-center margin-bottom-5 success">Command copied to clipboard!</div>
             <div class="text-center bold">${command}</div>`
         );
     } else {
         logs.insertAdjacentHTML(
             'beforeend',
-            `<div class="text-center margin-bottom-5 error">Failed to copy to clipboard. Please try again or copy manually:</div>
+            `<div class="text-center margin-bottom-5 error">Failed to copy to clipboard. Please notify dev and copy manually:</div>
             <div class="text-center bold">${command}</div>`
         );
     }
 }
-
-output.insertAdjacentHTML(
-    'beforeend',
-    `<div class="nisbutton" onclick="StarScopeCall.capture();">Get "/call" command</div>`
-);
