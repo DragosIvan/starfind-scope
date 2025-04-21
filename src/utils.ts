@@ -69,6 +69,7 @@ export const getLocation = (input: string): string => {
         Anachronia: 'Anachronia',
         onia: 'Anachronia',
         Asgarnia: 'Asgarnia',
+        Asgania: 'Asgarnia',
         rnia: 'Asgarnia',
         Ashdale: 'Ashdale',
         dale: 'Ashdale',

@@ -6376,6 +6376,7 @@ var getLocation = function (input) {
         Anachronia: 'Anachronia',
         onia: 'Anachronia',
         Asgarnia: 'Asgarnia',
+        Asgania: 'Asgarnia',
         rnia: 'Asgarnia',
         Ashdale: 'Ashdale',
         dale: 'Ashdale',
@@ -6705,7 +6706,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 var output = document.getElementById('output');
 var logs = document.getElementById('logs');
-output.insertAdjacentHTML('beforeend', "<div class=\"version\">v. 1.0.6</div>");
+output.insertAdjacentHTML('beforeend', "<div class=\"version\">v. 1.0.7</div>");
 if (window.alt1) {
     alt1.identifyAppUrl('./appconfig.json');
 }
