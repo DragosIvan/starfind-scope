@@ -1,4 +1,5 @@
 const testCases = [
+    'You see a shooting star! -\nThe star looks like it will land in the Daemonheim peninsula in the next 1\nhour 50 minutes to 1 hour 52 minutes.\nThe star looks to be size 3,',
     'in the next 1 hour 50 minutes to 1 hour 52 minutes',
     'next 1 hour 50 minutes to 1 hour 52 minutes',
     'next 10 to 12 minutes',
@@ -8,14 +9,24 @@ const testCases = [
 ];
 
 function getTime(input) {
-    // Extract time after "next" with more flexible pattern
-    const nextMatch = input.match(/(?:in the )?next\s+(.*?)\s+to/);
+    // Extract time after "next" with more flexible pattern, handling newlines
+    const nextMatch = input.match(
+        /(?:in the )?next\s+((?:[^\n]*\n)*?.*?)\s+to/s
+    );
+
+    console.log('Input:', input);
+    console.log('nextMatch:', nextMatch);
 
     if (!nextMatch) {
         return '0';
     }
 
-    const timeText = nextMatch[1];
+    // Clean up the timeText by removing newlines and extra spaces
+    const timeText = nextMatch[1]
+        .replace(/\n/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    console.log('timeText:', timeText);
 
     // Parse hours and minutes
     let totalMinutes = 0;
@@ -45,8 +56,8 @@ function getTime(input) {
 
 console.log('Testing time parsing with different formats:');
 testCases.forEach((testCase) => {
+    console.log('\n=== Test Case ===');
     const result = getTime(testCase);
-    console.log(`Input: "${testCase}"`);
-    console.log(`Result: ${result} minutes`);
-    console.log('---');
+    console.log(`Final Result: ${result} minutes`);
+    console.log('===============\n');
 });

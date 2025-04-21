@@ -6336,6 +6336,8 @@ function recognizeTextFromImage(image) {
                     // Terminate the worker
                     _a.sent();
                     finalText = text;
+                    // Replace all newlines with spaces
+                    finalText = finalText.replace(/\n/g, ' ');
                     finalText = finalText.replace('itwill', 'it will');
                     finalText = finalText.replace('mines', 'minutes');
                     // Normalize the input string
@@ -6415,6 +6417,7 @@ var getLocation = function (input) {
 var getTime = function (input) {
     // Extract time after "next" with more flexible pattern
     var nextMatch = input.match(/(?:in the )?next\s+(.*?)\s+to/);
+    console.log('nextMatch', nextMatch);
     if (!nextMatch) {
         return '0';
     }
@@ -6698,7 +6701,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 var output = document.getElementById('output');
 var logs = document.getElementById('logs');
-output.insertAdjacentHTML('beforeend', "<div class=\"version\">v. 1.0.4</div>");
+output.insertAdjacentHTML('beforeend', "<div class=\"version\">v. 1.0.5</div>");
 if (window.alt1) {
     alt1.identifyAppUrl('./appconfig.json');
 }

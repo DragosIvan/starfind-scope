@@ -19,6 +19,9 @@ export async function recognizeTextFromImage(image: Blob) {
 
         let finalText = text;
 
+        // Replace all newlines with spaces
+        finalText = finalText.replace(/\n/g, ' ');
+
         finalText = finalText.replace('itwill', 'it will');
         finalText = finalText.replace('mines', 'minutes');
 
@@ -109,6 +112,8 @@ export const getLocation = (input: string): string => {
 export const getTime = (input: string): string => {
     // Extract time after "next" with more flexible pattern
     const nextMatch = input.match(/(?:in the )?next\s+(.*?)\s+to/);
+
+    console.log('nextMatch', nextMatch);
 
     if (!nextMatch) {
         return '0';
