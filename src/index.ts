@@ -10,7 +10,7 @@ import { getLocation, getSize, getTime, recognizeTextFromImage } from './utils';
 var output = document.getElementById('output');
 var logs = document.getElementById('logs');
 
-output.insertAdjacentHTML('beforeend', `<div class="version">v. 1.0.3</div>`);
+output.insertAdjacentHTML('beforeend', `<div class="version">v. 1.0.4</div>`);
 
 if (window.alt1) {
     alt1.identifyAppUrl('./appconfig.json');
@@ -91,6 +91,7 @@ async function findDialogAndReadData(img: a1lib.ImgRef) {
             dialog.height - 40
         );
     } catch (err) {
+        console.error(err);
         logs.innerHTML = '';
 
         logs.insertAdjacentHTML(

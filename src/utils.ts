@@ -107,8 +107,8 @@ export const getLocation = (input: string): string => {
 };
 
 export const getTime = (input: string): string => {
-    // Extract time after "next"
-    const nextMatch = input.match(/next\s+(.*?)\s+to/);
+    // Extract time after "next" with more flexible pattern
+    const nextMatch = input.match(/(?:in the )?next\s+(.*?)\s+to/);
 
     if (!nextMatch) {
         return '0';
@@ -161,7 +161,12 @@ export const getSize = (input: string): string => {
 
     // Check for Tier 3 telescope first (exact size number)
     if (searchText.indexOf('size') === 1) {
-        const sizeNumber = searchText.substring(5).replace(/\D/g, '');
+        let sizeNumber = searchText.substring(5).replace(/\D/g, '');
+
+        if (sizeNumber === 'B') {
+            sizeNumber = '8';
+        }
+
         return sizeNumber.trim();
     }
 
