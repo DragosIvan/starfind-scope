@@ -6269,6 +6269,7 @@ var update = _node_modules_style_loader_dist_runtime_injectStylesIntoStyleTag_js
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   copyToClipboard: () => (/* binding */ copyToClipboard),
 /* harmony export */   getLocation: () => (/* binding */ getLocation),
 /* harmony export */   getSize: () => (/* binding */ getSize),
 /* harmony export */   getTime: () => (/* binding */ getTime),
@@ -6313,6 +6314,55 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
     }
 };
 
+function copyToClipboard(text) {
+    return __awaiter(this, void 0, void 0, function () {
+        var clipboardError_1, textArea, successful, err_1;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    _a.trys.push([0, 5, , 6]);
+                    if (!(navigator.clipboard && window.isSecureContext)) return [3 /*break*/, 4];
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, navigator.clipboard.writeText(text)];
+                case 2:
+                    _a.sent();
+                    return [2 /*return*/, true];
+                case 3:
+                    clipboardError_1 = _a.sent();
+                    console.warn('Clipboard API failed, falling back to legacy method:', clipboardError_1);
+                    return [3 /*break*/, 4];
+                case 4:
+                    textArea = document.createElement('textarea');
+                    textArea.value = text;
+                    textArea.style.position = 'fixed';
+                    textArea.style.left = '0';
+                    textArea.style.top = '0';
+                    textArea.style.opacity = '0';
+                    document.body.appendChild(textArea);
+                    textArea.focus();
+                    textArea.select();
+                    try {
+                        successful = document.execCommand('copy');
+                        document.body.removeChild(textArea);
+                        return [2 /*return*/, successful];
+                    }
+                    catch (err) {
+                        document.body.removeChild(textArea);
+                        console.error('Legacy copy method failed:', err);
+                        return [2 /*return*/, false];
+                    }
+                    return [3 /*break*/, 6];
+                case 5:
+                    err_1 = _a.sent();
+                    console.error('Failed to copy to clipboard:', err_1);
+                    return [2 /*return*/, false];
+                case 6: return [2 /*return*/];
+            }
+        });
+    });
+}
 function recognizeTextFromImage(image) {
     return __awaiter(this, void 0, void 0, function () {
         var worker, text, finalText, timeRangeMatch, _, start, end, startNum, endNum, error_1;
@@ -6706,7 +6756,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 var output = document.getElementById('output');
 var logs = document.getElementById('logs');
-output.insertAdjacentHTML('beforeend', "<div class=\"version\">v. 1.0.8</div>");
+output.insertAdjacentHTML('beforeend', "<div class=\"version\">v. 1.0.9</div>");
 if (window.alt1) {
     alt1.identifyAppUrl('./appconfig.json');
 }
@@ -6725,55 +6775,6 @@ function capture() {
     }
     var img = alt1__WEBPACK_IMPORTED_MODULE_5__.captureHoldFullRs();
     findDialogAndReadData(img);
-}
-function copyToClipboard(text) {
-    return __awaiter(this, void 0, void 0, function () {
-        var clipboardError_1, textArea, successful, err_1;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0:
-                    _a.trys.push([0, 5, , 6]);
-                    if (!(navigator.clipboard && window.isSecureContext)) return [3 /*break*/, 4];
-                    _a.label = 1;
-                case 1:
-                    _a.trys.push([1, 3, , 4]);
-                    return [4 /*yield*/, navigator.clipboard.writeText(text)];
-                case 2:
-                    _a.sent();
-                    return [2 /*return*/, true];
-                case 3:
-                    clipboardError_1 = _a.sent();
-                    console.warn('Clipboard API failed, falling back to legacy method:', clipboardError_1);
-                    return [3 /*break*/, 4];
-                case 4:
-                    textArea = document.createElement('textarea');
-                    textArea.value = text;
-                    textArea.style.position = 'fixed';
-                    textArea.style.left = '0';
-                    textArea.style.top = '0';
-                    textArea.style.opacity = '0';
-                    document.body.appendChild(textArea);
-                    textArea.focus();
-                    textArea.select();
-                    try {
-                        successful = document.execCommand('copy');
-                        document.body.removeChild(textArea);
-                        return [2 /*return*/, successful];
-                    }
-                    catch (err) {
-                        document.body.removeChild(textArea);
-                        console.error('Legacy copy method failed:', err);
-                        return [2 /*return*/, false];
-                    }
-                    return [3 /*break*/, 6];
-                case 5:
-                    err_1 = _a.sent();
-                    console.error('Failed to copy to clipboard:', err_1);
-                    return [2 /*return*/, false];
-                case 6: return [2 /*return*/];
-            }
-        });
-    });
 }
 function findDialogAndReadData(img) {
     return __awaiter(this, void 0, void 0, function () {
@@ -6810,7 +6811,7 @@ function findDialogAndReadData(img) {
                     console.log('Command: ', "/call world: ".concat(world, " region: ").concat(location, " size: ").concat(size, " relative-time: ").concat(time));
                     command = "/call world: ".concat(world, " region: ").concat(location, " size: ").concat(size, " relative-time: ").concat(time);
                     logs.innerHTML = '';
-                    return [4 /*yield*/, copyToClipboard(command)];
+                    return [4 /*yield*/, (0,_utils__WEBPACK_IMPORTED_MODULE_4__.copyToClipboard)(command)];
                 case 3:
                     copySuccess = _a.sent();
                     if (copySuccess) {

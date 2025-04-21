@@ -5,12 +5,18 @@ import './icon.png';
 import './styles.css';
 import DialogReader from 'alt1/dialog';
 
-import { getLocation, getSize, getTime, recognizeTextFromImage } from './utils';
+import {
+    copyToClipboard,
+    getLocation,
+    getSize,
+    getTime,
+    recognizeTextFromImage,
+} from './utils';
 
 var output = document.getElementById('output');
 var logs = document.getElementById('logs');
 
-output.insertAdjacentHTML('beforeend', `<div class="version">v. 1.0.8</div>`);
+output.insertAdjacentHTML('beforeend', `<div class="version">v. 1.0.9</div>`);
 
 if (window.alt1) {
     alt1.identifyAppUrl('./appconfig.json');
@@ -44,47 +50,6 @@ export function capture() {
     findDialogAndReadData(img);
 }
 
-async function copyToClipboard(text: string): Promise<boolean> {
-    try {
-        if (navigator.clipboard && window.isSecureContext) {
-            try {
-                await navigator.clipboard.writeText(text);
-                return true;
-            } catch (clipboardError) {
-                console.warn(
-                    'Clipboard API failed, falling back to legacy method:',
-                    clipboardError
-                );
-                // Fall through to legacy method
-            }
-        }
-
-        // Legacy method using textarea
-        const textArea = document.createElement('textarea');
-        textArea.value = text;
-        textArea.style.position = 'fixed';
-        textArea.style.left = '0';
-        textArea.style.top = '0';
-        textArea.style.opacity = '0';
-        document.body.appendChild(textArea);
-        textArea.focus();
-        textArea.select();
-
-        try {
-            const successful = document.execCommand('copy');
-            document.body.removeChild(textArea);
-            return successful;
-        } catch (err) {
-            document.body.removeChild(textArea);
-            console.error('Legacy copy method failed:', err);
-            return false;
-        }
-    } catch (err) {
-        console.error('Failed to copy to clipboard:', err);
-        return false;
-    }
-}
-
 async function findDialogAndReadData(img: a1lib.ImgRef) {
     logs.innerHTML = '<div class="spinner"></div>';
 
@@ -111,8 +76,6 @@ async function findDialogAndReadData(img: a1lib.ImgRef) {
 
         return;
     }
-
-    // log.insertAdjacentElement('beforeend', pixels.toImage());
 
     const pngImage = await pixels.toFileBytes('image/png');
 

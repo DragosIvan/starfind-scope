@@ -1,5 +1,46 @@
 import { createWorker } from 'tesseract.js';
 
+export async function copyToClipboard(text: string): Promise<boolean> {
+    try {
+        if (navigator.clipboard && window.isSecureContext) {
+            try {
+                await navigator.clipboard.writeText(text);
+                return true;
+            } catch (clipboardError) {
+                console.warn(
+                    'Clipboard API failed, falling back to legacy method:',
+                    clipboardError
+                );
+                // Fall through to legacy method
+            }
+        }
+
+        // Legacy method using textarea
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '0';
+        textArea.style.top = '0';
+        textArea.style.opacity = '0';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+
+        try {
+            const successful = document.execCommand('copy');
+            document.body.removeChild(textArea);
+            return successful;
+        } catch (err) {
+            document.body.removeChild(textArea);
+            console.error('Legacy copy method failed:', err);
+            return false;
+        }
+    } catch (err) {
+        console.error('Failed to copy to clipboard:', err);
+        return false;
+    }
+}
+
 export async function recognizeTextFromImage(image: Blob) {
     try {
         // Create a Tesseract worker with paths relative to the base path
