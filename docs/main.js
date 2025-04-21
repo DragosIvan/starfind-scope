@@ -6706,7 +6706,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 var output = document.getElementById('output');
 var logs = document.getElementById('logs');
-output.insertAdjacentHTML('beforeend', "<div class=\"version\">v. 1.0.7</div>");
+output.insertAdjacentHTML('beforeend', "<div class=\"version\">v. 1.0.8</div>");
 if (window.alt1) {
     alt1.identifyAppUrl('./appconfig.json');
 }
@@ -6728,17 +6728,24 @@ function capture() {
 }
 function copyToClipboard(text) {
     return __awaiter(this, void 0, void 0, function () {
-        var textArea, successful, err_1;
+        var clipboardError_1, textArea, successful, err_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 4, , 5]);
-                    if (!(navigator.clipboard && window.isSecureContext)) return [3 /*break*/, 2];
-                    return [4 /*yield*/, navigator.clipboard.writeText(text)];
+                    _a.trys.push([0, 5, , 6]);
+                    if (!(navigator.clipboard && window.isSecureContext)) return [3 /*break*/, 4];
+                    _a.label = 1;
                 case 1:
+                    _a.trys.push([1, 3, , 4]);
+                    return [4 /*yield*/, navigator.clipboard.writeText(text)];
+                case 2:
                     _a.sent();
                     return [2 /*return*/, true];
-                case 2:
+                case 3:
+                    clipboardError_1 = _a.sent();
+                    console.warn('Clipboard API failed, falling back to legacy method:', clipboardError_1);
+                    return [3 /*break*/, 4];
+                case 4:
                     textArea = document.createElement('textarea');
                     textArea.value = text;
                     textArea.style.position = 'fixed';
@@ -6755,15 +6762,15 @@ function copyToClipboard(text) {
                     }
                     catch (err) {
                         document.body.removeChild(textArea);
+                        console.error('Legacy copy method failed:', err);
                         return [2 /*return*/, false];
                     }
-                    _a.label = 3;
-                case 3: return [3 /*break*/, 5];
-                case 4:
+                    return [3 /*break*/, 6];
+                case 5:
                     err_1 = _a.sent();
                     console.error('Failed to copy to clipboard:', err_1);
                     return [2 /*return*/, false];
-                case 5: return [2 /*return*/];
+                case 6: return [2 /*return*/];
             }
         });
     });
