@@ -25,23 +25,28 @@ async function init() {
         alt1.identifyAppUrl('./appconfig.json');
 
         logs.innerHTML =
-            '<div class="center-spinner"><div class="spinner"></div></div>';
+            '<div class="center-absolute"><div class="spinner"></div></div>';
 
-        // Create a Tesseract worker with paths relative to the base path
-        worker = await createWorker('eng', 1, {
-            workerPath: './tesseract/worker.min.js',
-            corePath: './tesseract/tesseract-core.wasm.js',
-            langPath: './tesseract/',
-        });
+        try {
+            // Create a Tesseract worker with paths relative to the base path
+            worker = await createWorker('eng', 1, {
+                workerPath: './tesseract/worker.min.js',
+                corePath: './tesseract/tesseract-core.wasm.js',
+                langPath: './tesseract/',
+            });
 
-        console.log('Worker created!');
+            console.log('Worker created!');
 
-        logs.innerHTML = '';
+            logs.innerHTML = '';
 
-        output.insertAdjacentHTML(
-            'beforeend',
-            `<div class="nisbutton" onclick="StarScopeCall.capture();">Get "/call" command</div>`
-        );
+            output.insertAdjacentHTML(
+                'beforeend',
+                `<div class="nisbutton" onclick="StarScopeCall.capture();">Get "/call" command</div>`
+            );
+        } catch (err) {
+            console.error(err);
+            logs.innerHTML = `<div class="error text-center center-absolute">Something went wrong, Tesseract did not load, please notify dev! :(</div>`;
+        }
     } else {
         let addappurl = `alt1://addapp/${new URL('./appconfig.json', document.location.href).href}`;
 
@@ -103,12 +108,7 @@ async function findDialogAndReadData(img: a1lib.ImgRef) {
         );
     } catch (err) {
         console.error(err);
-        logs.innerHTML = '';
-
-        logs.insertAdjacentHTML(
-            'beforeend',
-            `<div class="error text-center">Please use a telescope in order to have data to read from!</div>`
-        );
+        logs.innerHTML = `<div class="error text-center">Please use a telescope in order to have data to read from!</div>`;
 
         return;
     }

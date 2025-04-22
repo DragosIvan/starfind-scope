@@ -3450,7 +3450,7 @@ body {
     color: #ddd;
 }
 
-.center-spinner {
+.center-absolute {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -6796,31 +6796,40 @@ var worker;
 output.insertAdjacentHTML('beforeend', "<div class=\"version\">v. 1.1.2</div>");
 function init() {
     return __awaiter(this, void 0, void 0, function () {
-        var addappurl;
+        var err_1, addappurl;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    if (!window.alt1) return [3 /*break*/, 2];
+                    if (!window.alt1) return [3 /*break*/, 5];
                     alt1.identifyAppUrl('./appconfig.json');
                     logs.innerHTML =
-                        '<div class="center-spinner"><div class="spinner"></div></div>';
+                        '<div class="center-absolute"><div class="spinner"></div></div>';
+                    _a.label = 1;
+                case 1:
+                    _a.trys.push([1, 3, , 4]);
                     return [4 /*yield*/, (0,tesseract_js__WEBPACK_IMPORTED_MODULE_5__.createWorker)('eng', 1, {
                             workerPath: './tesseract/worker.min.js',
                             corePath: './tesseract/tesseract-core.wasm.js',
                             langPath: './tesseract/',
                         })];
-                case 1:
+                case 2:
                     // Create a Tesseract worker with paths relative to the base path
                     worker = _a.sent();
                     console.log('Worker created!');
                     logs.innerHTML = '';
                     output.insertAdjacentHTML('beforeend', "<div class=\"nisbutton\" onclick=\"StarScopeCall.capture();\">Get \"/call\" command</div>");
-                    return [3 /*break*/, 3];
-                case 2:
+                    return [3 /*break*/, 4];
+                case 3:
+                    err_1 = _a.sent();
+                    console.error(err_1);
+                    logs.innerHTML = "<div class=\"error text-center center-absolute\">Something went wrong, Tesseract did not load, please notify dev! :(</div>";
+                    return [3 /*break*/, 4];
+                case 4: return [3 /*break*/, 6];
+                case 5:
                     addappurl = "alt1://addapp/".concat(new URL('./appconfig.json', document.location.href).href);
                     output.insertAdjacentHTML('beforeend', "<a href='".concat(addappurl, "' class=\"app-link\">\n                <div class=\"nisbutton\">Alt1 not detected, click here to add this app to Alt1</div>\n            </a>"));
-                    _a.label = 3;
-                case 3: return [2 /*return*/];
+                    _a.label = 6;
+                case 6: return [2 /*return*/];
             }
         });
     });
@@ -6855,8 +6864,7 @@ function findDialogAndReadData(img) {
                     }
                     catch (err) {
                         console.error(err);
-                        logs.innerHTML = '';
-                        logs.insertAdjacentHTML('beforeend', "<div class=\"error text-center\">Please use a telescope in order to have data to read from!</div>");
+                        logs.innerHTML = "<div class=\"error text-center\">Please use a telescope in order to have data to read from!</div>";
                         return [2 /*return*/];
                     }
                     return [4 /*yield*/, pixels.toFileBytes('image/png')];
