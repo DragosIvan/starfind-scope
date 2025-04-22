@@ -12,6 +12,10 @@ alt1:
 - Click the button
 - Enjoy! The app automatically copies the /call command, so all you need to do is go to discord and paste it!
 
+![Text copied successfully](success.png)
+
+![Text not copied successfully](error.png)
+
 Dev mode:
 
 ```sh
