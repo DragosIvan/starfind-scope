@@ -3450,6 +3450,13 @@ body {
     color: #ddd;
 }
 
+.center-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
 .spinner {
     width: 30px;
     height: 30px;
@@ -6291,8 +6298,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   getTime: () => (/* binding */ getTime),
 /* harmony export */   recognizeTextFromImage: () => (/* binding */ recognizeTextFromImage)
 /* harmony export */ });
-/* harmony import */ var tesseract_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tesseract.js */ "../node_modules/tesseract.js/src/index.js");
-/* harmony import */ var tesseract_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(tesseract_js__WEBPACK_IMPORTED_MODULE_0__);
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -6329,7 +6334,6 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-
 function copyToClipboard(text) {
     return __awaiter(this, void 0, void 0, function () {
         var clipboardError_1, textArea, successful, err_1;
@@ -6379,20 +6383,13 @@ function copyToClipboard(text) {
         });
     });
 }
-function recognizeTextFromImage(image) {
+function recognizeTextFromImage(worker, image) {
     return __awaiter(this, void 0, void 0, function () {
-        var worker, canvas_1, ctx, img_1, imageUrl_1, resizedBlob, text, finalText, timeRangeMatch, _, start, end, startNum, endNum, error_1;
+        var canvas_1, ctx, img_1, imageUrl_1, resizedBlob, text, finalText, timeRangeMatch, _, start, end, startNum, endNum, error_1;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    _a.trys.push([0, 6, , 7]);
-                    return [4 /*yield*/, (0,tesseract_js__WEBPACK_IMPORTED_MODULE_0__.createWorker)('eng', 1, {
-                            workerPath: './tesseract/worker.min.js', // Relative path to the worker script
-                            corePath: './tesseract/tesseract-core.wasm.js', // Relative path to the core script
-                            langPath: './tesseract/', // Relative path to language data
-                        })];
-                case 1:
-                    worker = _a.sent();
+                    _a.trys.push([0, 4, , 5]);
                     canvas_1 = document.createElement('canvas');
                     ctx = canvas_1.getContext('2d');
                     img_1 = new Image();
@@ -6402,7 +6399,7 @@ function recognizeTextFromImage(image) {
                             img_1.onerror = reject;
                             img_1.src = imageUrl_1;
                         })];
-                case 2:
+                case 1:
                     _a.sent();
                     // Set canvas size to 125% of original
                     canvas_1.width = img_1.width * 1.25;
@@ -6412,20 +6409,15 @@ function recognizeTextFromImage(image) {
                     return [4 /*yield*/, new Promise(function (resolve) {
                             canvas_1.toBlob(function (blob) { return resolve(blob); }, 'image/png');
                         })];
-                case 3:
+                case 2:
                     resizedBlob = _a.sent();
                     // Clean up
                     URL.revokeObjectURL(imageUrl_1);
                     // Use resized image for OCR
                     image = resizedBlob;
                     return [4 /*yield*/, worker.recognize(image)];
-                case 4:
+                case 3:
                     text = (_a.sent()).data.text;
-                    // Terminate the worker
-                    return [4 /*yield*/, worker.terminate()];
-                case 5:
-                    // Terminate the worker
-                    _a.sent();
                     finalText = text;
                     // Replace all newlines with spaces
                     finalText = finalText.replace(/\n/g, ' ');
@@ -6453,11 +6445,11 @@ function recognizeTextFromImage(image) {
                         }
                     }
                     return [2 /*return*/, finalText];
-                case 6:
+                case 4:
                     error_1 = _a.sent();
                     console.error('Error during OCR:', error_1);
                     throw error_1;
-                case 7: return [2 /*return*/];
+                case 5: return [2 /*return*/];
             }
         });
     });
@@ -6743,15 +6735,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   capture: () => (/* binding */ capture)
 /* harmony export */ });
-/* harmony import */ var alt1__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! alt1 */ "../node_modules/alt1/dist/base/index.js");
-/* harmony import */ var alt1__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(alt1__WEBPACK_IMPORTED_MODULE_5__);
+/* harmony import */ var alt1__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! alt1 */ "../node_modules/alt1/dist/base/index.js");
+/* harmony import */ var alt1__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(alt1__WEBPACK_IMPORTED_MODULE_6__);
 /* harmony import */ var _index_html__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.html */ "./index.html");
 /* harmony import */ var _appconfig_json__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./appconfig.json */ "./appconfig.json");
 /* harmony import */ var _icon_png__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./icon.png */ "./icon.png");
 /* harmony import */ var _styles_css__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./styles.css */ "./styles.css");
-/* harmony import */ var alt1_dialog__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! alt1/dialog */ "../node_modules/alt1/dist/dialog/index.js");
-/* harmony import */ var alt1_dialog__WEBPACK_IMPORTED_MODULE_6___default = /*#__PURE__*/__webpack_require__.n(alt1_dialog__WEBPACK_IMPORTED_MODULE_6__);
+/* harmony import */ var alt1_dialog__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! alt1/dialog */ "../node_modules/alt1/dist/dialog/index.js");
+/* harmony import */ var alt1_dialog__WEBPACK_IMPORTED_MODULE_7___default = /*#__PURE__*/__webpack_require__.n(alt1_dialog__WEBPACK_IMPORTED_MODULE_7__);
 /* harmony import */ var _utils__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./utils */ "./utils.ts");
+/* harmony import */ var tesseract_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! tesseract.js */ "../node_modules/tesseract.js/src/index.js");
+/* harmony import */ var tesseract_js__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(tesseract_js__WEBPACK_IMPORTED_MODULE_5__);
 var __awaiter = (undefined && undefined.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -6795,17 +6789,43 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 
 
+
 var output = document.getElementById('output');
 var logs = document.getElementById('logs');
-output.insertAdjacentHTML('beforeend', "<div class=\"version\">v. 1.1.1</div>");
-if (window.alt1) {
-    alt1.identifyAppUrl('./appconfig.json');
-    output.insertAdjacentHTML('beforeend', "<div class=\"nisbutton\" onclick=\"StarScopeCall.capture();\">Get \"/call\" command</div>");
+var worker;
+output.insertAdjacentHTML('beforeend', "<div class=\"version\">v. 1.1.2</div>");
+function init() {
+    return __awaiter(this, void 0, void 0, function () {
+        var addappurl;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (!window.alt1) return [3 /*break*/, 2];
+                    alt1.identifyAppUrl('./appconfig.json');
+                    logs.innerHTML =
+                        '<div class="center-spinner"><div class="spinner"></div></div>';
+                    return [4 /*yield*/, (0,tesseract_js__WEBPACK_IMPORTED_MODULE_5__.createWorker)('eng', 1, {
+                            workerPath: './tesseract/worker.min.js',
+                            corePath: './tesseract/tesseract-core.wasm.js',
+                            langPath: './tesseract/',
+                        })];
+                case 1:
+                    // Create a Tesseract worker with paths relative to the base path
+                    worker = _a.sent();
+                    console.log('Worker created!');
+                    logs.innerHTML = '';
+                    output.insertAdjacentHTML('beforeend', "<div class=\"nisbutton\" onclick=\"StarScopeCall.capture();\">Get \"/call\" command</div>");
+                    return [3 /*break*/, 3];
+                case 2:
+                    addappurl = "alt1://addapp/".concat(new URL('./appconfig.json', document.location.href).href);
+                    output.insertAdjacentHTML('beforeend', "<a href='".concat(addappurl, "' class=\"app-link\">\n                <div class=\"nisbutton\">Alt1 not detected, click here to add this app to Alt1</div>\n            </a>"));
+                    _a.label = 3;
+                case 3: return [2 /*return*/];
+            }
+        });
+    });
 }
-else {
-    var addappurl = "alt1://addapp/".concat(new URL('./appconfig.json', document.location.href).href);
-    output.insertAdjacentHTML('beforeend', "<a href='".concat(addappurl, "' class=\"app-link\">\n            <div class=\"nisbutton\">Alt1 not detected, click here to add this app to Alt1</div>\n        </a>"));
-}
+init();
 function capture() {
     if (!window.alt1) {
         output.insertAdjacentHTML('beforeend', "<div class=\"text-center\">You need to run this page in alt1 to capture the screen</div>");
@@ -6817,7 +6837,7 @@ function capture() {
         output.insertAdjacentHTML('beforeend', "<div class=\"text-center\">Page is not installed as app or not all permissions are enabled</div>");
         return;
     }
-    var img = alt1__WEBPACK_IMPORTED_MODULE_5__.captureHoldFullRs();
+    var img = alt1__WEBPACK_IMPORTED_MODULE_6__.captureHoldFullRs();
     findDialogAndReadData(img);
 }
 function findDialogAndReadData(img) {
@@ -6829,7 +6849,7 @@ function findDialogAndReadData(img) {
                     start = new Date().getTime();
                     logs.innerHTML = '<div class="spinner"></div>';
                     try {
-                        diagReader = new (alt1_dialog__WEBPACK_IMPORTED_MODULE_6___default())();
+                        diagReader = new (alt1_dialog__WEBPACK_IMPORTED_MODULE_7___default())();
                         dialog = diagReader.find();
                         pixels = img.toData(dialog.x, dialog.y + 20, dialog.width, dialog.height - 40);
                     }
@@ -6842,7 +6862,7 @@ function findDialogAndReadData(img) {
                     return [4 /*yield*/, pixels.toFileBytes('image/png')];
                 case 1:
                     pngImage = _a.sent();
-                    return [4 /*yield*/, (0,_utils__WEBPACK_IMPORTED_MODULE_4__.recognizeTextFromImage)(new Blob([pngImage], { type: 'image/png' }))];
+                    return [4 /*yield*/, (0,_utils__WEBPACK_IMPORTED_MODULE_4__.recognizeTextFromImage)(worker, new Blob([pngImage], { type: 'image/png' }))];
                 case 2:
                     text = _a.sent();
                     // let text = `You see a shooting star!

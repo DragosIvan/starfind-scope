@@ -12,29 +12,49 @@ import {
     getTime,
     recognizeTextFromImage,
 } from './utils';
+import Tesseract, { createWorker } from 'tesseract.js';
 
 var output = document.getElementById('output');
 var logs = document.getElementById('logs');
+var worker: Tesseract.Worker;
 
-output.insertAdjacentHTML('beforeend', `<div class="version">v. 1.1.1</div>`);
+output.insertAdjacentHTML('beforeend', `<div class="version">v. 1.1.2</div>`);
 
-if (window.alt1) {
-    alt1.identifyAppUrl('./appconfig.json');
+async function init() {
+    if (window.alt1) {
+        alt1.identifyAppUrl('./appconfig.json');
 
-    output.insertAdjacentHTML(
-        'beforeend',
-        `<div class="nisbutton" onclick="StarScopeCall.capture();">Get "/call" command</div>`
-    );
-} else {
-    let addappurl = `alt1://addapp/${new URL('./appconfig.json', document.location.href).href}`;
+        logs.innerHTML =
+            '<div class="center-spinner"><div class="spinner"></div></div>';
 
-    output.insertAdjacentHTML(
-        'beforeend',
-        `<a href='${addappurl}' class="app-link">
-            <div class="nisbutton">Alt1 not detected, click here to add this app to Alt1</div>
-        </a>`
-    );
+        // Create a Tesseract worker with paths relative to the base path
+        worker = await createWorker('eng', 1, {
+            workerPath: './tesseract/worker.min.js',
+            corePath: './tesseract/tesseract-core.wasm.js',
+            langPath: './tesseract/',
+        });
+
+        console.log('Worker created!');
+
+        logs.innerHTML = '';
+
+        output.insertAdjacentHTML(
+            'beforeend',
+            `<div class="nisbutton" onclick="StarScopeCall.capture();">Get "/call" command</div>`
+        );
+    } else {
+        let addappurl = `alt1://addapp/${new URL('./appconfig.json', document.location.href).href}`;
+
+        output.insertAdjacentHTML(
+            'beforeend',
+            `<a href='${addappurl}' class="app-link">
+                <div class="nisbutton">Alt1 not detected, click here to add this app to Alt1</div>
+            </a>`
+        );
+    }
 }
+
+init();
 
 export function capture() {
     if (!window.alt1) {
@@ -96,6 +116,7 @@ async function findDialogAndReadData(img: a1lib.ImgRef) {
     const pngImage = await pixels.toFileBytes('image/png');
 
     let text = await recognizeTextFromImage(
+        worker,
         new Blob([pngImage], { type: 'image/png' })
     );
 

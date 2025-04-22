@@ -1,4 +1,4 @@
-import { createWorker } from 'tesseract.js';
+import Tesseract from 'tesseract.js';
 
 export async function copyToClipboard(text: string): Promise<boolean> {
     try {
@@ -41,15 +41,11 @@ export async function copyToClipboard(text: string): Promise<boolean> {
     }
 }
 
-export async function recognizeTextFromImage(image: Blob) {
+export async function recognizeTextFromImage(
+    worker: Tesseract.Worker,
+    image: Blob
+) {
     try {
-        // Create a Tesseract worker with paths relative to the base path
-        const worker = await createWorker('eng', 1, {
-            workerPath: './tesseract/worker.min.js', // Relative path to the worker script
-            corePath: './tesseract/tesseract-core.wasm.js', // Relative path to the core script
-            langPath: './tesseract/', // Relative path to language data
-        });
-
         // Create a canvas to resize the image
         const canvas = document.createElement('canvas');
         const ctx = canvas.getContext('2d');
@@ -85,9 +81,6 @@ export async function recognizeTextFromImage(image: Blob) {
         const {
             data: { text },
         } = await worker.recognize(image);
-
-        // Terminate the worker
-        await worker.terminate();
 
         let finalText = text;
 
