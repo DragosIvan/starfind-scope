@@ -16,7 +16,7 @@ import {
 var output = document.getElementById('output');
 var logs = document.getElementById('logs');
 
-output.insertAdjacentHTML('beforeend', `<div class="version">v. 1.1.0</div>`);
+output.insertAdjacentHTML('beforeend', `<div class="version">v. 1.1.1</div>`);
 
 if (window.alt1) {
     alt1.identifyAppUrl('./appconfig.json');
@@ -65,6 +65,8 @@ export function capture() {
 }
 
 async function findDialogAndReadData(img: a1lib.ImgRef) {
+    const start = new Date().getTime();
+
     logs.innerHTML = '<div class="spinner"></div>';
 
     let pixels: ImageData;
@@ -85,7 +87,7 @@ async function findDialogAndReadData(img: a1lib.ImgRef) {
 
         logs.insertAdjacentHTML(
             'beforeend',
-            `<div class="text-center">Please use a telescope in order to have data to read from!</div>`
+            `<div class="error text-center">Please use a telescope in order to have data to read from!</div>`
         );
 
         return;
@@ -108,12 +110,9 @@ async function findDialogAndReadData(img: a1lib.ImgRef) {
     const size = getSize(text);
     const time = getTime(text);
 
-    console.log(
-        'Command: ',
-        `/call world: ${world} region: ${location} size: ${size} relative-time: ${time}`
-    );
-
     const command = `/call world: ${world} region: ${location} size: ${size} relative-time: ${time}`;
+
+    console.log(`Command: ${command}`);
 
     logs.innerHTML = '';
 
@@ -132,4 +131,10 @@ async function findDialogAndReadData(img: a1lib.ImgRef) {
             <div class="text-center bold">${command}</div>`
         );
     }
+
+    const end = new Date().getTime();
+    console.log(`Time taken: ${end - start} milliseconds`);
+    console.log(
+        `---------------------------------------------------------------------------------------------------------------------`
+    );
 }

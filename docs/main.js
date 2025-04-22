@@ -6387,9 +6387,9 @@ function recognizeTextFromImage(image) {
                 case 0:
                     _a.trys.push([0, 6, , 7]);
                     return [4 /*yield*/, (0,tesseract_js__WEBPACK_IMPORTED_MODULE_0__.createWorker)('eng', 1, {
-                            workerPath: './workers/worker.min.js', // Relative path to the worker script
-                            corePath: './core/tesseract-core.wasm.js', // Relative path to the core script
-                            langPath: './tesseract_data/', // Relative path to language data
+                            workerPath: './tesseract/worker.min.js', // Relative path to the worker script
+                            corePath: './tesseract/tesseract-core.wasm.js', // Relative path to the core script
+                            langPath: './tesseract/', // Relative path to language data
                         })];
                 case 1:
                     worker = _a.sent();
@@ -6797,7 +6797,7 @@ var __generator = (undefined && undefined.__generator) || function (thisArg, bod
 
 var output = document.getElementById('output');
 var logs = document.getElementById('logs');
-output.insertAdjacentHTML('beforeend', "<div class=\"version\">v. 1.1.0</div>");
+output.insertAdjacentHTML('beforeend', "<div class=\"version\">v. 1.1.1</div>");
 if (window.alt1) {
     alt1.identifyAppUrl('./appconfig.json');
     output.insertAdjacentHTML('beforeend', "<div class=\"nisbutton\" onclick=\"StarScopeCall.capture();\">Get \"/call\" command</div>");
@@ -6822,10 +6822,11 @@ function capture() {
 }
 function findDialogAndReadData(img) {
     return __awaiter(this, void 0, void 0, function () {
-        var pixels, diagReader, dialog, pngImage, text, world, location, size, time, command, copySuccess;
+        var start, pixels, diagReader, dialog, pngImage, text, world, location, size, time, command, copySuccess, end;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
+                    start = new Date().getTime();
                     logs.innerHTML = '<div class="spinner"></div>';
                     try {
                         diagReader = new (alt1_dialog__WEBPACK_IMPORTED_MODULE_6___default())();
@@ -6835,7 +6836,7 @@ function findDialogAndReadData(img) {
                     catch (err) {
                         console.error(err);
                         logs.innerHTML = '';
-                        logs.insertAdjacentHTML('beforeend', "<div class=\"text-center\">Please use a telescope in order to have data to read from!</div>");
+                        logs.insertAdjacentHTML('beforeend', "<div class=\"error text-center\">Please use a telescope in order to have data to read from!</div>");
                         return [2 /*return*/];
                     }
                     return [4 /*yield*/, pixels.toFileBytes('image/png')];
@@ -6852,8 +6853,8 @@ function findDialogAndReadData(img) {
                     location = (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getLocation)(text);
                     size = (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getSize)(text);
                     time = (0,_utils__WEBPACK_IMPORTED_MODULE_4__.getTime)(text);
-                    console.log('Command: ', "/call world: ".concat(world, " region: ").concat(location, " size: ").concat(size, " relative-time: ").concat(time));
                     command = "/call world: ".concat(world, " region: ").concat(location, " size: ").concat(size, " relative-time: ").concat(time);
+                    console.log("Command: ".concat(command));
                     logs.innerHTML = '';
                     return [4 /*yield*/, (0,_utils__WEBPACK_IMPORTED_MODULE_4__.copyToClipboard)(command)];
                 case 3:
@@ -6864,6 +6865,9 @@ function findDialogAndReadData(img) {
                     else {
                         logs.insertAdjacentHTML('beforeend', "<div class=\"text-center margin-bottom-5 error\">Failed to copy to clipboard. Please notify dev and copy manually:</div>\n            <div class=\"text-center bold\">".concat(command, "</div>"));
                     }
+                    end = new Date().getTime();
+                    console.log("Time taken: ".concat(end - start, " milliseconds"));
+                    console.log("---------------------------------------------------------------------------------------------------------------------");
                     return [2 /*return*/];
             }
         });

@@ -77,15 +77,19 @@ module.exports = {
             patterns: [
                 {
                     from: '../node_modules/tesseract.js/dist/worker.min.js',
-                    to: 'workers/',
+                    to: 'tesseract/',
+                },
+                {
+                    from: '../node_modules/tesseract.js/dist/worker.min.js.map',
+                    to: 'tesseract/',
                 },
                 {
                     from: '../node_modules/tesseract.js-core/tesseract-core.wasm.js',
-                    to: 'core/',
+                    to: 'tesseract/',
                 },
                 {
                     from: '../public/tesseract_data/eng.traineddata.gz',
-                    to: 'tesseract_data/',
+                    to: 'tesseract/',
                 },
             ],
         }),
