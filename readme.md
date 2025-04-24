@@ -4,8 +4,8 @@ alt1:
 
 - Make sure alt1 is running
 - Navigate, in your browser or the alt1 browser, to this address: https://dragosivan.github.io/starfind-scope/
-- Click on "here" to install the app in alt1.
-- Give necessary permissions
+- Click the button to install the app in alt1.
+- Give the necessary permissions
 - Open the app
 - Right-click on "Alt1 Toolkit" in-game, in the top-right corner, and make sure "Show current world" is checked
 - Use your telescope
