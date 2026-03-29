@@ -1,6 +1,6 @@
 {
     "name": "starfind-scope",
-    "version": "1.1.11",
+    "version": "1.1.12",
     "private": true,
     "sideEffects": true,
     "description": "Alt1 plugin to read telescope dialog and generate the /call command for pasting into StarFinds Discord bot.",

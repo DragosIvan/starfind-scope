@@ -172,6 +172,10 @@ export const getLocation = (input: string): string => {
         nnwn: 'Piscatoris/Gnome/Tirannwn',
         Tuska: 'Tuska',
         uska: 'Tuska',
+        Wendlewick: 'Wendlewick',
+        lewick: 'Wendlewick',
+        VVendlewick: 'Wendlewick',
+        Wendlevvick: 'Wendlewick',
         Wilderness: 'Wilderness',
         derness: 'Wilderness',
     };
