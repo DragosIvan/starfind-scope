@@ -244,8 +244,8 @@ export const getSize = (input: string): string => {
         'very big': 'Big',
     };
 
-    const sizeTextStart = 'be';
-    const startIndex = input.indexOf(sizeTextStart) + 2;
+    const sizeTextStart = 'to be';
+    const startIndex = input.indexOf(sizeTextStart) + 5;
     const searchText = input.substring(startIndex);
 
     // Check for Tier 3 telescope first (exact size number)
