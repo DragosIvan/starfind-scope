@@ -140,6 +140,12 @@ export async function recognizeTextFromImage(
 
 export const getLocation = (input: string): string => {
     const locationMap: { [key: string]: string } = {
+        Amberfell: 'Amberfell',
+        Amherfell: 'Amberfell',
+        Arnberfell: 'Amberfell',
+        Arberfell: 'Amberfell',
+        mberfell: 'Amberfell',
+        Amberfeil: 'Amberfell',
         Anachronia: 'Anachronia',
         onia: 'Anachronia',
         Asgarnia: 'Asgarnia',
