@@ -140,6 +140,12 @@ export async function recognizeTextFromImage(
 
 export const getLocation = (input: string): string => {
     const locationMap: { [key: string]: string } = {
+        Amberfell: 'Amberfell',
+        Amherfell: 'Amberfell',
+        Arnberfell: 'Amberfell',
+        Arberfell: 'Amberfell',
+        mberfell: 'Amberfell',
+        Amberfeil: 'Amberfell',
         Anachronia: 'Anachronia',
         onia: 'Anachronia',
         Asgarnia: 'Asgarnia',
@@ -238,8 +244,8 @@ export const getSize = (input: string): string => {
         'very big': 'Big',
     };
 
-    const sizeTextStart = 'be';
-    const startIndex = input.indexOf(sizeTextStart) + 2;
+    const sizeTextStart = 'to be';
+    const startIndex = input.indexOf(sizeTextStart) + 5;
     const searchText = input.substring(startIndex);
 
     // Check for Tier 3 telescope first (exact size number)
